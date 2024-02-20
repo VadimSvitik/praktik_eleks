@@ -1,0 +1,28 @@
+import re
+
+def count_word_occurrences(word, mode, file_path):
+    try:
+        with open(file_path, 'r', encoding='utf-8') as file:
+            content = file.read()
+
+            if mode == 1:
+                occurrences = len(re.findall(f'(?i){word}', content))
+            elif mode == 2:
+                occurrences = len(re.findall(f'\\b{word}\\b', content))
+            else:
+                print("Невірний режим роботи. Використовуйте 1 або 2.")
+                return
+
+            print(f"Кількість згадувань слова '{word}' у файлі: {occurrences}")
+    except FileNotFoundError:
+        print("Файл не знайдено.")
+
+if __name__ == "__main__":
+    try:
+        word = input("Введіть слово: ")
+        mode = int(input("Введіть режим роботи (1 або 2): "))
+        file_path = input("Введіть шлях до текстового файлу: ")
+
+        count_word_occurrences(word, mode, file_path)
+    except ValueError:
+        print("Введіть коректні значення.")
