@@ -1,0 +1,26 @@
+from flask import Flask, request
+import requests
+import logging
+
+app = Flask(__name__)
+
+# Адреса другого веб-сервісу
+second_service_url = 'http://localhost:5001'
+
+# Налаштування логування
+logging.basicConfig(filename='main_service.log', level=logging.INFO)
+
+@app.route('/add_user', methods=['POST'])
+def add_user():
+    user_data = request.json  # Припустимо, що дані приходять у форматі JSON
+    logging.info(f"Додавання нового користувача {user_data['name']}")
+    
+    # Запит до другого сервісу для збереження користувача
+    response = requests.post(f"{second_service_url}/add_user", json=user_data)
+    
+    return response.json(), response.status_code
+
+# Аналогічно, реалізуйте інші CRUD операції та обробку логів
+
+if __name__ == '__main__':
+    app.run(debug=True)
