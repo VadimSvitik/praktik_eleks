@@ -1,0 +1,22 @@
+import sys
+
+def fibonacci(index):
+    if index <= 0:
+        return "Введіть додатне ціле число для знаходження числа Фібоначчі."
+
+    fib_sequence = [0, 1]
+    while len(fib_sequence) <= index:
+        fib_sequence.append(fib_sequence[-1] + fib_sequence[-2])
+
+    return fib_sequence[index]
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Використання: python script.py <індекс_числа_Фібоначчі>")
+    else:
+        try:
+            index = int(sys.argv[1])
+            result = fibonacci(index)
+            print(f"Число Фібоначчі з індексом {index}: {result}")
+        except ValueError:
+            print("Введіть ціле число для знаходження числа Фібоначчі.")
