@@ -1,0 +1,22 @@
+import sys
+
+def reverse_text(file_path):
+    try:
+        with open(file_path, 'r', encoding='utf-8') as file:
+            text = file.read()
+        
+        reversed_text = text[::-1]  # Зворотний порядок
+        
+        with open('result.txt', 'w', encoding='utf-8') as result_file:
+            result_file.write(reversed_text)
+            
+        print("Результат успішно записано у файл 'result.txt'.")
+    except FileNotFoundError:
+        print("Вказаний файл не існує.")
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Використання: python script.py <шлях_до_файлу>")
+    else:
+        input_file_path = sys.argv[1]
+        reverse_text(input_file_path)
