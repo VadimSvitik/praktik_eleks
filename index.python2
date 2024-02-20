@@ -1,0 +1,25 @@
+def merge_and_sort(*arrays):
+    merged_array = []
+
+    for array in arrays:
+        merged_array.extend(array)
+
+    unique_array = list(set(merged_array))
+
+    sorted_array = sorted([num for num in unique_array if num % 5 != 0])
+
+    return sorted_array
+
+if __name__ == "__main__":
+    try:
+        num_arrays = int(input("Введіть кількість масивів: "))
+        arrays = []
+
+        for i in range(num_arrays):
+            array = list(map(int, input(f"Введіть елементи масиву {i + 1} через пробіл: ").split()))
+            arrays.append(array)
+
+        result_array = merge_and_sort(*arrays)
+        print(f"Результуючий масив: {result_array}")
+    except ValueError:
+        print("Введіть коректні цілі числа.")
