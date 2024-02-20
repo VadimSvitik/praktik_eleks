@@ -1,0 +1,58 @@
+from flask import Flask, render_template, request, redirect, url_for, session
+import matplotlib.pyplot as plt
+import io
+import base64
+
+app = Flask(__name__)
+app.secret_key = 'your_secret_key'  # Секретний ключ для сесії, слід змінити
+
+# Початковий бюджет (можна розширити для зберігання в базі даних)
+initial_budget = 1000
+budget = initial_budget
+expenses = []
+
+# Розтрати по категоріям
+categories = ['Їжа', 'Одяг', 'Розваги', 'Житло']
+category_expenses = {category: 0 for category in categories}
+
+# Допоміжна функція для генерації графіку
+def generate_plot():
+    plt.clf()
+    plt.pie(category_expenses.values(), labels=category_expenses.keys(), autopct='%1.1f%%')
+    plt.title('Розтрати по категоріям')
+    img = io.BytesIO()
+    plt.savefig(img, format='png')
+    img.seek(0)
+    plot_url = base64.b64encode(img.getvalue()).decode()
+    return plot_url
+
+# Головна сторінка
+@app.route('/')
+def index():
+    return render_template('index.html', budget=budget, expenses=expenses, plot_url=generate_plot())
+
+# Додавання витрати
+@app.route('/add_expense', methods=['POST'])
+def add_expense():
+    amount = float(request.form['amount'])
+    category = request.form['category']
+    
+    # Оновлення розтрат та бюджету
+    expenses.append({'amount': amount, 'category': category})
+    category_expenses[category] += amount
+    budget -= amount
+
+    # Перенаправлення на головну сторінку
+    return redirect(url_for('index'))
+
+# Обнулення бюджету
+@app.route('/reset_budget')
+def reset_budget():
+    global budget, expenses, category_expenses
+    budget = initial_budget
+    expenses = []
+    category_expenses = {category: 0 for category in categories}
+    return redirect(url_for('index'))
+
+if __name__ == '__main__':
+    app.run(debug=True)
