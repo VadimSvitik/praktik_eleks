@@ -1,0 +1,29 @@
+import math
+
+def calculate_angle(x, y):
+    angle_radians = math.atan2(y, x)
+    angle_degrees = math.degrees(angle_radians)
+    return angle_degrees
+
+def compare_angles(x1, y1, x2, y2):
+    angle_oa = calculate_angle(x1, y1)
+    angle_ob = calculate_angle(x2, y2)
+
+    if angle_oa > angle_ob:
+        return "ОА"
+    elif angle_oa < angle_ob:
+        return "ОВ"
+    else:
+        return "Відрізки утворюють однаковий кут."
+
+if __name__ == "__main__":
+    try:
+        x1 = float(input("Введіть координату x1: "))
+        y1 = float(input("Введіть координату y1: "))
+        x2 = float(input("Введіть координату x2: "))
+        y2 = float(input("Введіть координату y2: "))
+
+        result = compare_angles(x1, y1, x2, y2)
+        print(f"Відрізок, що утворює більший кут: {result}")
+    except ValueError:
+        print("Введіть коректні координати.")
